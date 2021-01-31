@@ -14,7 +14,7 @@ from dash.dependencies import Input, Output
 # Dash setup
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-server = app.server
+# server = app.server
 
 # Getting serie A data
 # soccer_data = SoccerDataAPI()
@@ -31,16 +31,16 @@ app.layout = html.Div(children=[
 
     # League Selection DropDown
     html.Div([
-        html.H1('Welcome to Soccer Dash!'),
-
-        html.H3('Select a league below:'),
         # Maybe do this as buttons instead of dropdown
+        html.Div([
+        html.H1('Welcome to Soccer Dash!'),
+        # html.H3
         dcc.Dropdown(id='league-dropdown',
                      options=[
-                    {'label': 'Serie A', 'value': 'Serie A'},
                     {'label': 'Premier League', 'value': 'Premier League'},
                     {'label': 'La Liga', 'value': 'La Liga'},
                     {'label': 'Bundesliga', 'value': 'Bundesliga'},
+                    {'label': 'Serie A', 'value': 'Serie A'},
                     {'label': 'Ligue 1', 'value': 'Ligue 1'}],
                     value='Serie A'
                     )
@@ -111,11 +111,11 @@ def update_league(league):
     # Setting up and converting df
     df = pd.DataFrame(data)
 
-    # Reformatting data in table to be plotly friendly
     cols2int = ['pos','wins', 'losses',  'draws', 'losses',
        'goals_for', 'goals_against', 'goal_diff',]
     for col in cols2int:
         df[col] = df[col].astype(int)
+        print(df[col])
 
     # Seeting up scatter
     f = px.scatter(df, x="goal_diff", y="points", 
