@@ -120,7 +120,8 @@ def update_league(league):
     # Seeting up scatter
     f = px.scatter(df, x="goal_diff", y="points", 
                  text='team', title=league,
-                 hover_data=['team', 'top_scorer'])
+                 hover_data=['team', 'top_scorer'],
+                 labels={'goal_diff':'Goal Differential', 'points':'Points'})
     f.update_traces(textposition='middle right')
     f.update_yaxes(autorange="reversed")
 
