@@ -14,7 +14,7 @@ from dash.dependencies import Input, Output
 # Dash setup
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-# server = app.server
+server = app.server
 
 # Getting serie A data
 # soccer_data = SoccerDataAPI()
