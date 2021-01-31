@@ -68,7 +68,12 @@ app.layout = html.Div(children=[
         dcc.Graph(id='goal-diff-graph')
         ], className = 'four columns')
     
-    ], className='row')
+    ], className='row'),
+
+    # Top Scorers graph
+    html.Div([
+        dcc.Graph(id='top-scorers-graph')
+        ])
     
 ])
 
@@ -78,7 +83,8 @@ app.layout = html.Div(children=[
     [Output('points-goal-diff-graph', 'figure'),
     Output('offense-graph', 'figure'),
     Output('defense-graph','figure'),
-    Output('goal-diff-graph', 'figure')],
+    Output('goal-diff-graph', 'figure'),
+    Output('top-scorers-graph', 'figure')],
     Input('league-dropdown', 'value')
     )
 def update_league(league):
@@ -117,6 +123,12 @@ def update_league(league):
     for col in cols2int:
         df[col] = df[col].astype(int)
 
+    # Adding top scorer goals
+    get_goals = lambda x: int(x['top_scorer'].split(' - ')[1])
+    df['top_scorer_goals'] = df.apply(get_goals, axis=1)
+
+    print(f'{league} data:\n', df)
+
     # Seeting up scatter
     f = px.scatter(df, x="goal_diff", y="points", 
                  text='team', title=league,
@@ -137,8 +149,12 @@ def update_league(league):
     diff_bar = px.bar(df, x='team', y='goal_diff', title=f'{league} Goal Differential',
                       labels={'team':'','goal_diff':'Goal Differential'})
 
+    s_bar = px.bar(df, x='top_scorer', y='top_scorer_goals', title=f'{league} Top Scorers',
+                    hover_data=['team', 'top_scorer'],
+                    labels={'top_scorer':'Player','top_scorer_goals':'Goals'})
+
     # Goal Diff Bar Graph
-    return f, a_bar, d_bar, diff_bar
+    return f, a_bar, d_bar, diff_bar, s_bar
 
 
 # run the app
